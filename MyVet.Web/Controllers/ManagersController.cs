@@ -10,22 +10,22 @@ using MyVet.Web.Data.Entities;
 
 namespace MyVet.Web.Controllers
 {
-    public class AgendasController : Controller
+    public class ManagersController : Controller
     {
         private readonly DataContext _context;
 
-        public AgendasController(DataContext context)
+        public ManagersController(DataContext context)
         {
             _context = context;
         }
 
-        // GET: Agendas
+        // GET: Managers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Agendas.ToListAsync());
+            return View(await _context.Managers.ToListAsync());
         }
 
-        // GET: Agendas/Details/5
+        // GET: Managers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace MyVet.Web.Controllers
                 return NotFound();
             }
 
-            var agenda = await _context.Agendas
+            var manager = await _context.Managers
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (agenda == null)
+            if (manager == null)
             {
                 return NotFound();
             }
 
-            return View(agenda);
+            return View(manager);
         }
 
-        // GET: Agendas/Create
+        // GET: Managers/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Agendas/Create
+        // POST: Managers/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Date,Remarks,IsAvailable")] Agenda agenda)
+        public async Task<IActionResult> Create([Bind("Id")] Manager manager)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(agenda);
+                _context.Add(manager);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(agenda);
+            return View(manager);
         }
 
-        // GET: Agendas/Edit/5
+        // GET: Managers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace MyVet.Web.Controllers
                 return NotFound();
             }
 
-            var agenda = await _context.Agendas.FindAsync(id);
-            if (agenda == null)
+            var manager = await _context.Managers.FindAsync(id);
+            if (manager == null)
             {
                 return NotFound();
             }
-            return View(agenda);
+            return View(manager);
         }
 
-        // POST: Agendas/Edit/5
+        // POST: Managers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,Remarks,IsAvailable")] Agenda agenda)
+        public async Task<IActionResult> Edit(int id, [Bind("Id")] Manager manager)
         {
-            if (id != agenda.Id)
+            if (id != manager.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace MyVet.Web.Controllers
             {
                 try
                 {
-                    _context.Update(agenda);
+                    _context.Update(manager);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AgendaExists(agenda.Id))
+                    if (!ManagerExists(manager.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace MyVet.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(agenda);
+            return View(manager);
         }
 
-        // GET: Agendas/Delete/5
+        // GET: Managers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +124,30 @@ namespace MyVet.Web.Controllers
                 return NotFound();
             }
 
-            var agenda = await _context.Agendas
+            var manager = await _context.Managers
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (agenda == null)
+            if (manager == null)
             {
                 return NotFound();
             }
 
-            return View(agenda);
+            return View(manager);
         }
 
-        // POST: Agendas/Delete/5
+        // POST: Managers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var agenda = await _context.Agendas.FindAsync(id);
-            _context.Agendas.Remove(agenda);
+            var manager = await _context.Managers.FindAsync(id);
+            _context.Managers.Remove(manager);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AgendaExists(int id)
+        private bool ManagerExists(int id)
         {
-            return _context.Agendas.Any(e => e.Id == id);
+            return _context.Managers.Any(e => e.Id == id);
         }
     }
 }
