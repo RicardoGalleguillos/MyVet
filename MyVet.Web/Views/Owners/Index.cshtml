@@ -4,26 +4,92 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Owners</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.Document)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.PhoneNumber)
+            </th>
+            <th>
+                # Pets
+            </th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Document)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.PhoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Pets.Count)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
+                    <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog">Delete</button>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<!--Vista del modal para  confirmar la eliminación-->
+<partial name="_DeleteDialog" />
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Varaible para Id de Item a eliminar
+            var item_to_delete;
+        //recupera el ID del propietario al presionar el boton Delete
+            $('.deleteItem').click((e) => {
+                item_to_delete = e.currentTarget.dataset.id;
+            });
+
+            //Al confirmar la eliminacion desde el modal, envia la peticion al controlador OwnersController y al metodo Delete junto al ID del propietario
+            //Ejemplo: https://localhost:44308/Owners/Delete/1
+            $("#btnYesDelete").click(function () {
+                window.location.href = '/Owners/Delete/' + item_to_delete;
+            });
+        });
+    </script>
+}
