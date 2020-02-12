@@ -84,6 +84,15 @@ namespace MyVet.Web.Helpers
             return await _userManager.UpdateAsync(user);
         }
 
+        //valida el loggeo, si la convinación del user y password son validos
+        //parametro false = bloque por numero de intentos, pero no tiene sentido ya que la funcion no es para loggeo.
+        public async Task<SignInResult> ValidatePasswordAsync(User user, string password)
+        {
+            return await _signInManager.CheckPasswordSignInAsync(
+                user,
+                password,
+                false);
+        }
 
 
     }
